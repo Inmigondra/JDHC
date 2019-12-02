@@ -4,6 +4,7 @@ using BarcodeScanner;
 using BarcodeScanner.Scanner;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UI;
 
 
 public enum TurnPhase { Initialisation, Scanning, Sorting, WaitResult }
@@ -60,18 +61,29 @@ public class QRReader : MonoBehaviour {
     string qrStringRead;
     public AudioSource audioS;
 
+    [Header("UI Elements")]
+    public Text textScorePlayerOne;
+    public Text textScorePlayerTwo;
+    public Text textPrefab;
+
+    public GameObject[] columnPlayerOne = new GameObject[3];
+    public GameObject[] columnPlayerTwo = new GameObject[3];
+
     // Use this for initialization
     void Start () {
         scanner = new Scanner();
         scanner.Camera.Play();
         scanner.OnReady += (sender, arg) => {
-            restartTime = Time.realtimeSinceStartup;
-
-        };        
+            restartTime = Time.realtimeSinceStartup; 
+        };
+        textScorePlayerOne.text = "0";
+        textScorePlayerTwo.text = "0";
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        textScorePlayerOne.text = "P1 : " + scorePlayerOne.ToString();
+        textScorePlayerTwo.text = "P2 : " + scorePlayerTwo.ToString();
         if (scanner != null)
         {
             scanner.Update();
@@ -187,89 +199,234 @@ public class QRReader : MonoBehaviour {
         {
             if (cTOne[i] == CardType.Paper)
             {
+                Text newTextOne = Instantiate(textPrefab, columnPlayerOne[i].transform); 
+                if (cCOne[i] == CardColor.Blue)
+                {
+                    newTextOne.text = "P.B";
+                }else if (cCOne[i] == CardColor.Red)
+                {
+                    newTextOne.text = "P.R";
+                }
+
                 if (cTTwo[i] == CardType.Paper)
                 {
+                    Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
+                    if (cCTwo[i] == CardColor.Blue)
+                    {
+                        newTextTwo.text = "P.B";
+                    }
+                    else if (cCTwo[i] == CardColor.Red)
+                    {
+                        newTextTwo.text = "P.R";
+                    }
                     Debug.LogWarning("Equal");
                 }
                 if (cTTwo[i] == CardType.Rock)
                 {
+                    Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
+                    if (cCTwo[i] == CardColor.Blue)
+                    {
+                        newTextTwo.text = "R.B";
+                    }
+                    else if (cCTwo[i] == CardColor.Red)
+                    {
+                        newTextTwo.text = "R.R";
+                    }                 
                     Debug.LogWarning("P1 Win");
                     PlayerOneScore(cCOne[i], i);
                 }
                 if (cTTwo[i] == CardType.Scissor)
                 {
+                    Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
+                    if (cCTwo[i] == CardColor.Blue)
+                    {
+                        newTextTwo.text = "S.B";
+                    }
+                    else if (cCTwo[i] == CardColor.Red)
+                    {
+                        newTextTwo.text = "S.R";
+                    }
                     PlayerTwoScore(cCTwo[i], i);
                     Debug.LogWarning("P2 Win");
                 }
                 if (cTTwo[i] == CardType.Joker)
                 {
+                    Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
+                    newTextTwo.text = "J";
                     scorePlayerTwo += 1;
                     Debug.Log("P2 win");
                 }
             }
             if (cTOne[i] == CardType.Rock)
             {
+                Text newTextOne = Instantiate(textPrefab, columnPlayerOne[i].transform);
+                if (cCOne[i] == CardColor.Blue)
+                {
+                    newTextOne.text = "R.B";
+                }
+                else if (cCOne[i] == CardColor.Red)
+                {
+                    newTextOne.text = "R.R";
+                }
                 if (cTTwo[i] == CardType.Paper)
                 {
+                    Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
+                    if (cCTwo[i] == CardColor.Blue)
+                    {
+                        newTextTwo.text = "P.B";
+                    }
+                    else if (cCTwo[i] == CardColor.Red)
+                    {
+                        newTextTwo.text = "P.R";
+                    }
                     PlayerTwoScore(cCTwo[i], i);
                     Debug.LogWarning("P2 Win");
                 }
                 if (cTTwo[i] == CardType.Rock)
                 {
+                    Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
+                    if (cCTwo[i] == CardColor.Blue)
+                    {
+                        newTextTwo.text = "R.B";
+                    }
+                    else if (cCTwo[i] == CardColor.Red)
+                    {
+                        newTextTwo.text = "R.R";
+                    }
                     Debug.LogWarning("Equal");
                 }
                 if (cTTwo[i] == CardType.Scissor)
                 {
+                    Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
+                    if (cCTwo[i] == CardColor.Blue)
+                    {
+                        newTextTwo.text = "S.B";
+                    }
+                    else if (cCTwo[i] == CardColor.Red)
+                    {
+                        newTextTwo.text = "S.R";
+                    }
                     PlayerOneScore(cCOne[i], i);
                     Debug.LogWarning("P1 Win");
                 }
                 if (cTTwo[i] == CardType.Joker)
                 {
+                    Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
+                    newTextTwo.text = "J";
                     scorePlayerTwo += 1;
                     Debug.Log("P2 win");
                 }
             }
             if (cTOne[i] == CardType.Scissor)
             {
+                Text newTextOne = Instantiate(textPrefab, columnPlayerOne[i].transform);
+                if (cCOne[i] == CardColor.Blue)
+                {
+                    newTextOne.text = "S.B";
+                }
+                else if (cCOne[i] == CardColor.Red)
+                {
+                    newTextOne.text = "S.R";
+                }
                 if (cTTwo[i] == CardType.Paper)
                 {
+                    Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
+                    if (cCTwo[i] == CardColor.Blue)
+                    {
+                        newTextTwo.text = "P.B";
+                    }
+                    else if (cCTwo[i] == CardColor.Red)
+                    {
+                        newTextTwo.text = "P.R";
+                    }
                     PlayerOneScore(cCOne[i], i);
                     Debug.LogWarning("P1 Win");
                 }
                 if (cTTwo[i] == CardType.Rock)
                 {
+                    Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
+                    if (cCTwo[i] == CardColor.Blue)
+                    {
+                        newTextTwo.text = "R.B";
+                    }
+                    else if (cCTwo[i] == CardColor.Red)
+                    {
+                        newTextTwo.text = "R.R";
+                    }
                     PlayerTwoScore(cCTwo[i], i);
                     Debug.LogWarning("P2 Win");
                 }
                 if (cTTwo[i] == CardType.Scissor)
                 {
+                    Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
+                    if (cCTwo[i] == CardColor.Blue)
+                    {
+                        newTextTwo.text = "S.B";
+                    }
+                    else if (cCTwo[i] == CardColor.Red)
+                    {
+                        newTextTwo.text = "S.R";
+                    }
                     Debug.LogWarning("Equal");
                 }
                 if (cTTwo[i] == CardType.Joker)
                 {
+                    Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
+                    newTextTwo.text = "J";
                     scorePlayerTwo += 1;
                     Debug.Log("P2 win");
                 }
             }
             if (cTOne[i] == CardType.Joker)
             {
+                Text newTextOne = Instantiate(textPrefab, columnPlayerOne[i].transform);
+                newTextOne.text = "J";
                 if (cTTwo[i] == CardType.Paper)
                 {
+                    Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
+                    if (cCTwo[i] == CardColor.Blue)
+                    {
+                        newTextTwo.text = "P.B";
+                    }
+                    else if (cCTwo[i] == CardColor.Red)
+                    {
+                        newTextTwo.text = "P.R";
+                    }
                     scorePlayerOne += 1;
                     Debug.LogWarning("P1 Win");
                 }
                 if (cTTwo[i] == CardType.Rock)
                 {
+                    Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
+                    if (cCTwo[i] == CardColor.Blue)
+                    {
+                        newTextTwo.text = "R.B";
+                    }
+                    else if (cCTwo[i] == CardColor.Red)
+                    {
+                        newTextTwo.text = "R.R";
+                    }
                     scorePlayerOne += 1;
                     Debug.LogWarning("P1 Win");
                 }
                 if (cTTwo[i] == CardType.Scissor)
                 {
+                    Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
+                    if (cCTwo[i] == CardColor.Blue)
+                    {
+                        newTextTwo.text = "S.B";
+                    }
+                    else if (cCTwo[i] == CardColor.Red)
+                    {
+                        newTextTwo.text = "S.R";
+                    }
                     scorePlayerOne += 1;
                     Debug.LogWarning("P1 Win");
                 }
                 if (cTTwo[i] == CardType.Joker)
                 {
+                    Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
+                    newTextTwo.text = "J";
                     Debug.Log("Equal");
                 }
             }
