@@ -66,6 +66,14 @@ public class QRReader : MonoBehaviour {
     public Text textScorePlayerTwo;
     public Text textPrefab;
 
+    public Text[] mult = new Text[6];
+    public Color[] colorMult = new Color[2];
+    public int[] numbMult = new int [6];
+
+    public GameObject[] playerOnePlayed = new GameObject[3];
+    public GameObject[] playerTwoPlayed = new GameObject[3];
+
+
     public GameObject[] columnPlayerOne = new GameObject[3];
     public GameObject[] columnPlayerTwo = new GameObject[3];
 
@@ -104,7 +112,12 @@ public class QRReader : MonoBehaviour {
         {
             StartCoroutine("SortingCards");
         }
-        
+
+
+        for (int i = 0; i <6 ; i++)
+        {
+            mult[i].text = numbMult[i].ToString();
+        }
     }
 
     void StartScanner()
@@ -189,6 +202,101 @@ public class QRReader : MonoBehaviour {
     private IEnumerator SortingCards ()
     {
         tP = TurnPhase.WaitResult;
+        //New
+        for (int i = 0; i <= 2; i++)
+        {
+            if (cTOne[i]== CardType.Paper)
+            {
+                if (cCOne[i] == CardColor.Blue)
+                {
+                    GameObject played = playerOnePlayed[i].transform.Find("Feuille Lune").gameObject;
+                    played.SetActive(true);
+                }
+                else if (cCOne[i] == CardColor.Red)
+                {
+                    GameObject played = playerOnePlayed[i].transform.Find("Feuille Soleil").gameObject;
+                    played.SetActive(true);
+                }
+            }
+            if (cTOne[i] == CardType.Scissor)
+            {
+                if (cCOne[i] == CardColor.Blue)
+                {
+                    GameObject played = playerOnePlayed[i].transform.Find("Ciseaux Lune").gameObject;
+                    played.SetActive(true);
+                }
+                else if (cCOne[i] == CardColor.Red)
+                {
+                    GameObject played = playerOnePlayed[i].transform.Find("Ciseaux Soleil").gameObject;
+                    played.SetActive(true);
+                }
+            }
+            if (cTOne[i] == CardType.Rock)
+            {
+                if (cCOne[i] == CardColor.Blue)
+                {
+                    GameObject played = playerOnePlayed[i].transform.Find("Rocher Lune").gameObject;
+                    played.SetActive(true);
+                }
+                else if (cCOne[i] == CardColor.Red)
+                {
+                    GameObject played = playerOnePlayed[i].transform.Find("Pierre Soleil").gameObject;
+                    played.SetActive(true);
+                }
+            }
+            if (cTOne[i] == CardType.Joker)
+            {
+                GameObject played = playerOnePlayed[i].transform.Find("Joker").gameObject;
+                played.SetActive(true);
+            }
+            //--------------------------------
+            if (cTTwo[i] == CardType.Paper)
+            {
+                if (cCTwo[i] == CardColor.Blue)
+                {
+                    GameObject played = playerTwoPlayed[i].transform.Find("Feuille Lune").gameObject;
+                    played.SetActive(true);
+                }
+                else if (cCTwo[i] == CardColor.Red)
+                {
+                    GameObject played = playerTwoPlayed[i].transform.Find("Feuille Soleil").gameObject;
+                    played.SetActive(true);
+                }
+            }
+            if (cTTwo[i] == CardType.Scissor)
+            {
+                if (cCTwo[i] == CardColor.Blue)
+                {
+                    GameObject played = playerTwoPlayed[i].transform.Find("Ciseaux Lune").gameObject;
+                    played.SetActive(true);
+                }
+                else if (cCTwo[i] == CardColor.Red)
+                {
+                    GameObject played = playerTwoPlayed[i].transform.Find("Ciseaux Soleil").gameObject;
+                    played.SetActive(true);
+                }
+            }
+            if (cTTwo[i] == CardType.Rock)
+            {
+                if (cCTwo[i] == CardColor.Blue)
+                {
+                    GameObject played = playerTwoPlayed[i].transform.Find("Rocher Lune").gameObject;
+                    played.SetActive(true);
+                }
+                else if (cCTwo[i] == CardColor.Red)
+                {
+                    GameObject played = playerTwoPlayed[i].transform.Find("Pierre Soleil").gameObject;
+                    played.SetActive(true);
+                }
+            }
+            if (cTTwo[i] == CardType.Joker)
+            {
+                GameObject played = playerTwoPlayed[i].transform.Find("Joker").gameObject;
+                played.SetActive(true);
+            }
+
+        }
+        //Old
         yield return new WaitForSeconds(1f);
         for (int j = 0; j < 3; j++)
         {
@@ -199,6 +307,8 @@ public class QRReader : MonoBehaviour {
         {
             if (cTOne[i] == CardType.Paper)
             {
+                Multchecker(cCOne[i], i, true);
+
                 Text newTextOne = Instantiate(textPrefab, columnPlayerOne[i].transform); 
                 if (cCOne[i] == CardColor.Blue)
                 {
@@ -210,6 +320,8 @@ public class QRReader : MonoBehaviour {
 
                 if (cTTwo[i] == CardType.Paper)
                 {
+                    Multchecker(cCTwo[i], i, false);
+
                     Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
                     if (cCTwo[i] == CardColor.Blue)
                     {
@@ -223,6 +335,8 @@ public class QRReader : MonoBehaviour {
                 }
                 if (cTTwo[i] == CardType.Rock)
                 {
+                    Multchecker(cCTwo[i], i, false);
+
                     Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
                     if (cCTwo[i] == CardColor.Blue)
                     {
@@ -237,6 +351,8 @@ public class QRReader : MonoBehaviour {
                 }
                 if (cTTwo[i] == CardType.Scissor)
                 {
+                    Multchecker(cCTwo[i], i, false);
+
                     Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
                     if (cCTwo[i] == CardColor.Blue)
                     {
@@ -251,6 +367,8 @@ public class QRReader : MonoBehaviour {
                 }
                 if (cTTwo[i] == CardType.Joker)
                 {
+                    Multchecker(cCTwo[i], i, false);
+
                     Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
                     newTextTwo.text = "J";
                     scorePlayerTwo += 1;
@@ -259,6 +377,7 @@ public class QRReader : MonoBehaviour {
             }
             if (cTOne[i] == CardType.Rock)
             {
+                Multchecker(cCOne[i], i, true);
                 Text newTextOne = Instantiate(textPrefab, columnPlayerOne[i].transform);
                 if (cCOne[i] == CardColor.Blue)
                 {
@@ -270,6 +389,8 @@ public class QRReader : MonoBehaviour {
                 }
                 if (cTTwo[i] == CardType.Paper)
                 {
+                    Multchecker(cCTwo[i], i, false);
+
                     Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
                     if (cCTwo[i] == CardColor.Blue)
                     {
@@ -284,6 +405,8 @@ public class QRReader : MonoBehaviour {
                 }
                 if (cTTwo[i] == CardType.Rock)
                 {
+                    Multchecker(cCTwo[i], i, false);
+
                     Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
                     if (cCTwo[i] == CardColor.Blue)
                     {
@@ -297,6 +420,8 @@ public class QRReader : MonoBehaviour {
                 }
                 if (cTTwo[i] == CardType.Scissor)
                 {
+                    Multchecker(cCTwo[i], i, false);
+
                     Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
                     if (cCTwo[i] == CardColor.Blue)
                     {
@@ -311,6 +436,8 @@ public class QRReader : MonoBehaviour {
                 }
                 if (cTTwo[i] == CardType.Joker)
                 {
+                    Multchecker(cCTwo[i], i, false);
+
                     Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
                     newTextTwo.text = "J";
                     scorePlayerTwo += 1;
@@ -319,6 +446,8 @@ public class QRReader : MonoBehaviour {
             }
             if (cTOne[i] == CardType.Scissor)
             {
+                Multchecker(cCOne[i], i, true);
+
                 Text newTextOne = Instantiate(textPrefab, columnPlayerOne[i].transform);
                 if (cCOne[i] == CardColor.Blue)
                 {
@@ -330,6 +459,8 @@ public class QRReader : MonoBehaviour {
                 }
                 if (cTTwo[i] == CardType.Paper)
                 {
+                    Multchecker(cCTwo[i], i, false);
+
                     Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
                     if (cCTwo[i] == CardColor.Blue)
                     {
@@ -344,6 +475,8 @@ public class QRReader : MonoBehaviour {
                 }
                 if (cTTwo[i] == CardType.Rock)
                 {
+                    Multchecker(cCTwo[i], i, false);
+
                     Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
                     if (cCTwo[i] == CardColor.Blue)
                     {
@@ -358,6 +491,8 @@ public class QRReader : MonoBehaviour {
                 }
                 if (cTTwo[i] == CardType.Scissor)
                 {
+                    Multchecker(cCTwo[i], i, false);
+
                     Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
                     if (cCTwo[i] == CardColor.Blue)
                     {
@@ -371,6 +506,8 @@ public class QRReader : MonoBehaviour {
                 }
                 if (cTTwo[i] == CardType.Joker)
                 {
+                    Multchecker(cCTwo[i], i, false);
+
                     Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
                     newTextTwo.text = "J";
                     scorePlayerTwo += 1;
@@ -379,10 +516,14 @@ public class QRReader : MonoBehaviour {
             }
             if (cTOne[i] == CardType.Joker)
             {
+                Multchecker(cCOne[i], i, true);
+
                 Text newTextOne = Instantiate(textPrefab, columnPlayerOne[i].transform);
                 newTextOne.text = "J";
                 if (cTTwo[i] == CardType.Paper)
                 {
+                    Multchecker(cCTwo[i], i, false);
+
                     Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
                     if (cCTwo[i] == CardColor.Blue)
                     {
@@ -397,6 +538,8 @@ public class QRReader : MonoBehaviour {
                 }
                 if (cTTwo[i] == CardType.Rock)
                 {
+                    Multchecker(cCTwo[i], i, false);
+
                     Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
                     if (cCTwo[i] == CardColor.Blue)
                     {
@@ -411,6 +554,8 @@ public class QRReader : MonoBehaviour {
                 }
                 if (cTTwo[i] == CardType.Scissor)
                 {
+                    Multchecker(cCTwo[i], i, false);
+
                     Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
                     if (cCTwo[i] == CardColor.Blue)
                     {
@@ -425,6 +570,8 @@ public class QRReader : MonoBehaviour {
                 }
                 if (cTTwo[i] == CardType.Joker)
                 {
+                    Multchecker(cCTwo[i], i, false);
+
                     Text newTextTwo = Instantiate(textPrefab, columnPlayerTwo[i].transform);
                     newTextTwo.text = "J";
                     Debug.Log("Equal");
@@ -432,12 +579,30 @@ public class QRReader : MonoBehaviour {
             }
             yield return new WaitForSeconds(1f);
         }
+
+        yield return new WaitForSeconds(5f);
+        foreach (GameObject item in playerOnePlayed)
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                item.transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+        foreach (GameObject item in playerTwoPlayed)
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                item.transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+
         tP = TurnPhase.Initialisation;
         yield return null;
     }
 
     private IEnumerator Reset()
     {
+        
         turnNumber += 1;
         tP = TurnPhase.Scanning;
         cardPlayedTurnOne = 0;
@@ -453,6 +618,8 @@ public class QRReader : MonoBehaviour {
                 tP = TurnPhase.Scanning;
             }
         }
+
+        
         yield return null;
     }
 
@@ -465,9 +632,11 @@ public class QRReader : MonoBehaviour {
             {
                 Debug.LogWarning(rowOne[turnNumber].cC[columnNumber]);
                 Debug.LogWarning(color);
+                
                 scorePlayerOne += 1;
             }else
             {
+                
                 i = -1;
             }
         }
@@ -485,5 +654,79 @@ public class QRReader : MonoBehaviour {
                 i = -1;
             }
         }
+    }
+
+    void Multchecker (CardColor color, int columnNumber, bool isPlayerOne)
+    {
+        if (isPlayerOne)
+        {
+            for (int i = turnNumber; i >= 0; i--)
+            {
+                if (rowOne[i].cC[columnNumber] == color)
+                {
+                    if (i == 0)
+                    {
+                        numbMult[columnNumber] += 1;
+                    }
+                    if (rowOne[i].cC[columnNumber] == CardColor.Red)
+                    {
+                        mult[columnNumber].color = colorMult[0];
+                    }
+                    else if (rowOne[i].cC[columnNumber] == CardColor.Blue)
+                    {
+                        mult[columnNumber].color = colorMult[1];
+                    }
+                }
+                else
+                {
+                    if (rowOne[i].cC[columnNumber] == CardColor.Red)
+                    {
+                        mult[columnNumber].color = colorMult[0];
+                    }
+                    else if (rowOne[i].cC[columnNumber] == CardColor.Blue)
+                    {
+                        mult[columnNumber].color = colorMult[1];
+                    }
+                    numbMult[columnNumber] = 1;
+                    
+                    i = -1;
+                }
+            }
+        }
+        else
+        {
+            for (int i = turnNumber; i >= 0; i--)
+            {
+                if (rowTwo[i].cC[columnNumber] == color)
+                {
+                    if (i == 0)
+                    {
+                        numbMult[columnNumber + 3] += 1;                        
+                    }
+                    if (rowTwo[i].cC[columnNumber] == CardColor.Red)
+                    {
+                        mult[columnNumber+3].color = colorMult[0];
+                    }
+                    else if (rowTwo[i].cC[columnNumber] == CardColor.Blue)
+                    {
+                        mult[columnNumber + 3].color = colorMult[1];
+                    }
+                }
+                else
+                {
+                    if (rowTwo[i].cC[columnNumber] == CardColor.Red)
+                    {
+                        mult[columnNumber + 3].color = colorMult[0];
+                    }
+                    else if (rowTwo[i].cC[columnNumber] == CardColor.Blue)
+                    {
+                        mult[columnNumber + 3].color = colorMult[1];
+                    }
+                    numbMult[columnNumber+3] = 1;
+                    i = -1;
+                }
+            }
+        }
+        
     }
 }
